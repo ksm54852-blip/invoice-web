@@ -6,11 +6,7 @@ const envSchema = z.object({
     .default('development'),
   VERCEL_URL: z.string().optional(),
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
-  NEXT_PUBLIC_BASE_URL: z
-    .string()
-    .url()
-    .optional()
-    .default('http://localhost:3000'),
+  NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
   NOTION_API_KEY: z
     .string()
     .min(1, 'NOTION_API_KEY는 필수입니다')
@@ -68,3 +64,19 @@ if (env.NODE_ENV === 'production') {
 }
 
 export type Env = z.infer<typeof envSchema>
+
+/**
+ * 견적서 링크 등에 사용할 애플리케이션 기본 URL
+ * 우선순위: NEXT_PUBLIC_BASE_URL(수동 설정) > VERCEL_URL(배포별 자동 할당) > 로컬 개발 기본값
+ */
+export function getBaseUrl(): string {
+  if (env.NEXT_PUBLIC_BASE_URL) {
+    return env.NEXT_PUBLIC_BASE_URL
+  }
+
+  if (env.VERCEL_URL) {
+    return `https://${env.VERCEL_URL}`
+  }
+
+  return 'http://localhost:3000'
+}

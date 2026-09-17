@@ -1,4 +1,4 @@
-import { env } from '@/lib/env'
+import { getBaseUrl } from '@/lib/env'
 
 /**
  * 견적서 고유 URL 생성
@@ -6,7 +6,7 @@ import { env } from '@/lib/env'
  * @returns 견적서 전체 URL
  */
 export function generateInvoiceUrl(invoiceId: string): string {
-  return `${env.NEXT_PUBLIC_BASE_URL}/invoice/${invoiceId}`
+  return `${getBaseUrl()}/invoice/${invoiceId}`
 }
 
 /**
